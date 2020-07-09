@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;1,200&display=swap" rel="stylesheet">	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+
+</head>
+
+<body> 
+
+<div id="resultContainer">
+	<div id="albumArt"></div>
+	<h2 id="songArtist"></h2>
+	<h2 id="songTitle"></h2>
+	<h2 id="albumTitle"></h2>
+</div>
+
+<div class="searchContainer">
+  <input placeholder='Search song, artist or album...' class='js-search' type="text" id="searchInput">
+  <div input type="button"><img src="icons/purpleSearchIcon.png" id="click-searchButton"></div>
+
+  <!-- <input type="button" img src="icons/purpleSearchIcon.png" id="click-searchButton"> -->
+<!--   <i style='font-size:24px' id="click-searchIcon" class='fas'>&#xf002; </i>
+ -->
+</div>
+
+
+<div class="buttons">
+	<img src="icons/rewind_White.png" id="previous">
+	<img src="icons/play_White.png" id="play">
+	<img src="icons/pause_White.png" id="pause">
+	<img src="icons/stop_White.png" id="stop">
+	<img src="icons/FF_White.png" id="next">
+</div>
+
+
+
+
+<audio id="myAudio">
+	<source src="audio/Porches - Slow Dance in the Cosmos - 10 The Cosmos.mp3" class = "songs" type="audio/mp3">
+
+</audio>
+
+
+<script type= "text/javascript" src='index.js'></script> 
+</body>
+</html>
