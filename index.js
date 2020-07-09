@@ -1,7 +1,5 @@
 //Jukebox HW_V2... API
 
-//HINT: look at code from image gallery, array of images is similar to array of songs
-
 //For Spotify API: following these instructions:
 //https://developer.spotify.com/documentation/web-api/quick-start/
 
@@ -16,8 +14,9 @@ $(document).ready(function (){
 
 		let submit = document.getElementById("click-searchButton");
 			submit.addEventListener("click", searchAjaxCall)
+
+		//click enter key instead of submit button:
 		let searchInput = document.getElementById("searchInput");
-			// Execute a function when the user releases a key on the keyboard
 			searchInput.addEventListener("keyup", function(event) {
 			  // Number 13 is the "Enter" key on the keyboard
 			  if (event.keyCode === 13) {
@@ -27,6 +26,8 @@ $(document).ready(function (){
 				searchAjaxCall();
 			  }
 			});
+
+		//variables:
 		let albumArt = document.getElementById("albumArt")
 		let songArtist = document.getElementById("songArtist");
 		let songTitle = document.getElementById("songTitle");
@@ -44,7 +45,7 @@ $(document).ready(function (){
 		let nextButton = document.getElementById("next");
 		let musicPlayer = document.getElementById("myAudio")
 
-
+		//connects the search to the deezer api:
 		function searchAjaxCall(){
 			// console.log(searchInput.value)
 			$.ajax({	
@@ -56,50 +57,31 @@ $(document).ready(function (){
 				}
 			})
 		}
-
+		//write to screen:
 		function displaySearchData(input){
-			// for (let i = 0; i < input.data.length; i++){
-			// 	if (input[i].data.title.toLowerCase() == searchInput.value.toLowerCase()){
-			// 		$("songTitle").html("Song Title: " + input.data[i].title); // change to data[i].title or response.data[i].title NOT:input[0].title
-			// 		console.log(input.data[i].title)
-			// 	}
-			// }
-			// console.log(input)
-
 				albumArt.style.backgroundImage = "url('" + input.data[0].album.cover_big + "')"
 				songArtist.innerHTML = " ARTIST: " + input.data[0].artist.name
 				songTitle.innerHTML = " TITLE: " + input.data[0].title 
 				albumTitle.innerHTML = " ALBUM: " + input.data[0].album.title
-
 		}
-
+		//plays song after search is done:
 		function playSongPreview(input){
 			unClickedButton();
 			musicPlayer.src = input.data[0].preview;
 			musicPlayer.play();	
 			playButton.src = "icons/play_White_Fill.png";
 		}
-
+		//plays same song when play is clicked:
 		function playLastSong(input){
 			musicPlayer.play();
 			unClickedButton();	
 			playButton.src = "icons/play_White_Fill.png";
 		}
 
+		//empty array for previous and next buttons (didn't finish)
 		var songs = []
-
-
-		// var songs = [
-		// 	"audio/Porches - Slow Dance in the Cosmos - 10 The Cosmos.mp3",
-		// 	"audio/Trace Mountains - Lost in the Country - 01 Rock & Roll.mp3",
-		// 	"audio/Angel Olsen - Shut Up Kiss Me.mp3"
-		// ];
-
-		
-
 		var i = 0; //first song is 0 in index
 
-		//playButton.addEventListener("click", playSong);
 		pauseButton.addEventListener("click", pauseSong);
 		stopButton.addEventListener("click", stopSong);
 		previousButton.addEventListener("click", previousSong);
@@ -113,13 +95,6 @@ $(document).ready(function (){
 			nextButton.src = "icons/FF_White.png";
 		}
 
-
-		// function playSong(){
-		// 	unClickedButton();
-		// 	musicPlayer.play();	
-		// 	playButton.src = "icons/play_White_Fill.png";
-			
-		// }
 
 		function pauseSong() {
 			unClickedButton();
