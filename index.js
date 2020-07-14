@@ -45,6 +45,9 @@ $(document).ready(function (){
 		let nextButton = document.getElementById("next");
 		let musicPlayer = document.getElementById("myAudio")
 
+		//empty array for previous and next buttons 
+		var searchResults = []
+
 		//connects the search to the deezer api:
 		function searchAjaxCall(){
 			// console.log(searchInput.value)
@@ -53,16 +56,23 @@ $(document).ready(function (){
 				success: function(response) {
 				displaySearchData(response);
 				playSongPreview(response);
-				console.log(response)
+				// console.log(response)
+
+				//clear out search results if you do multiple searches
+				searchResults = []
+				//populate searchResults with the results data
+				searchResults = response
+				console.log(searchResults)
+
 				}
 			})
 		}
 		//write to screen:
 		function displaySearchData(input){
-				albumArt.style.backgroundImage = "url('" + input.data[0].album.cover_big + "')"
-				songArtist.innerHTML = " ARTIST: " + input.data[0].artist.name
-				songTitle.innerHTML = " TITLE: " + input.data[0].title 
-				albumTitle.innerHTML = " ALBUM: " + input.data[0].album.title
+				albumArt.style.backgroundImage = "url('" + input.data[i].album.cover_big + "')"
+				songArtist.innerHTML = " ARTIST: " + input.data[i].artist.name
+				songTitle.innerHTML = " TITLE: " + input.data[i].title 
+				albumTitle.innerHTML = " ALBUM: " + input.data[i].album.title
 		}
 		//plays song after search is done:
 		function playSongPreview(input){
@@ -72,20 +82,19 @@ $(document).ready(function (){
 			playButton.src = "icons/play_White_Fill.png";
 		}
 		//plays same song when play is clicked:
-		function playLastSong(input){
+		function playLastSong(){
 			musicPlayer.play();
 			unClickedButton();	
 			playButton.src = "icons/play_White_Fill.png";
 		}
 
-		//empty array for previous and next buttons (didn't finish)
-		var songs = []
 		var i = 0; //first song is 0 in index
 
 		pauseButton.addEventListener("click", pauseSong);
 		stopButton.addEventListener("click", stopSong);
 		previousButton.addEventListener("click", previousSong);
 		nextButton.addEventListener("click", nextSong);
+		
 
 		function unClickedButton(){
 			playButton.src = "icons/play_White.png";
@@ -111,34 +120,62 @@ $(document).ready(function (){
 
 		function previousSong(){
 			unClickedButton();
+			previousButton.src = "icons/rewind_White_Fill.png";
+
+			$.ajax({
+				url: proxyurl + url + searchInput.value,
+				success: function(response){
+					displaySearchData(response);
+
+					// clear out searchResults, or else it will keep adding arrays after multiple searches
+					searchResults = []
+					//populate searchResults array wiith the search results data (an array of key/value pairs)
+					searchResults = response
+					console.log(searchResults)
+				}
+
+			})
+
 			if (i === 0){
-				i = songs.length -1 //last song in array
+				i = searchResults.length -1 //last song in array
 			}
 			else{
 				i--; // if not first song it goes to previous index in array
 			}
-			musicPlayer.src = songs[i]; 
+			musicPlayer.src = searchResults.data[i].preview;
 			musicPlayer.play();
 
-			previousButton.src = "icons/rewind_White_Fill.png";
 			
 		}
 
-		function nextSong(input){
+		function nextSong(){
 			unClickedButton();
-			if (i === input.data.length -1){ // sets i to first song if you're on the last song
+			nextButton.src = "icons/FF_White_Fill.png";
+
+			$.ajax({
+				url: proxyurl + url + searchInput.value,
+				success: function(response){
+					displaySearchData(response);
+
+					// clear out searchResults, or else it will keep adding arrays after multiple searches
+					searchResults = []
+					//populate searchResults array wiith the search results data (an array of key/value pairs)
+					searchResults = response
+					console.log(searchResults)
+				}
+
+			})
+
+			if (i === searchResults.length -1){ // sets i to first song if you're on the last song
 				i = 0
+
 			}
 			else{
-				i++; // adds 1 to the inidex in array
+				i++; // adds 1 to the index in array
 			}
-			//musicPlayer.src = input.data[i].preview;
-			//musicPlayer.src = songs[i];
+			musicPlayer.src = searchResults.data[i].preview;
 			musicPlayer.play();
-
-			nextButton.src = "icons/FF_White_Fill.png";
-			
-			
+	
 		}
 
 });
